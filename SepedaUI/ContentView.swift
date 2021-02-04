@@ -30,8 +30,48 @@ struct ProductModel : Identifiable{
 }
 
 struct ContentView: View {
+    
+    let data : [ProductModel] = [
+        ProductModel(id: 1, namaproduk: "Polygon Xtrada", fotoproduk: "foto1", hargaproduk: 2000000, lokasi: "Kab.Banyumas", ratingcount: 4, jumlahrating: 56),
+        ProductModel(id: 2, namaproduk: "Polygon Heist", fotoproduk: "foto2", hargaproduk: 3000000, lokasi: "Kab.Bogor", ratingcount: 5, jumlahrating: 50),
+        ProductModel(id: 3, namaproduk: "Polygon Monarch", fotoproduk: "foto3", hargaproduk: 5000000, lokasi: "Kab.Brebes", ratingcount: 4, jumlahrating: 56),
+        ProductModel(id: 4, namaproduk: "United Detroit", fotoproduk: "foto4", hargaproduk: 9000000, lokasi: "Kab.Pekalongan", ratingcount: 5, jumlahrating: 56),
+        ProductModel(id: 5, namaproduk: "United Miami", fotoproduk: "foto5", hargaproduk: 9000000, lokasi: "Kab.Pamulang", ratingcount: 3, jumlahrating: 56),
+        ProductModel(id: 6, namaproduk: "United Patrol", fotoproduk: "foto6", hargaproduk: 2000000, lokasi: "Kab.Banyumas", ratingcount: 4, jumlahrating: 56),
+        ProductModel(id: 7, namaproduk: "Exotic M56", fotoproduk: "foto7", hargaproduk: 6000000, lokasi: "Kab.Bogor", ratingcount: 5, jumlahrating: 50),
+        ProductModel(id: 8, namaproduk: "Exotic J98", fotoproduk: "foto8", hargaproduk: 2000000, lokasi: "Kab.Brebes", ratingcount: 4, jumlahrating: 56),
+        ProductModel(id: 9, namaproduk: "Genio Xtrada", fotoproduk: "foto9", hargaproduk: 8000000, lokasi: "Kab.Pekalongan", ratingcount: 5, jumlahrating: 56),
+        ProductModel(id: 10, namaproduk: "Pacific M898", fotoproduk: "foto10", hargaproduk: 2000000, lokasi: "Kab.Pamulang", ratingcount: 4, jumlahrating: 56)
+    ]
+    
     var body: some View {
-        Product()
+        NavigationView{
+            ScrollView{
+                ForEach(data) { row in
+                    VStack(spacing:10) {
+                        Product(data: row)
+                    }
+                    .padding()
+                }
+            }
+            .navigationBarTitle("Sepeda MTB")
+            .navigationBarItems(
+                trailing:
+                HStack(spacing: 20){
+                    Button(action: {print()})
+                    {
+                        Image(systemName: "person.fill")
+                    }
+                    
+                    Button(action: {print()})
+                    {
+                        Image(systemName: "cart.fill")
+                    }
+                }
+            )
+        }
+        .accentColor(Color.secondary)
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
@@ -41,12 +81,14 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct Product: View{
+struct Product: View {
+    let data: ProductModel
+    
     var body: some View{
         VStack(alignment: .leading){
             //foto
             ZStack(alignment:.topTrailing){
-                Image("foto1")
+                Image(self.data.fotoProduk)
                     .resizable()
                     .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
                     .frame(height:250)
@@ -59,13 +101,13 @@ struct Product: View{
                 }
             }
             
-            Text("Sepeda Polygon")
+            Text(self.data.namaProduk)
                 .font(.title)
                 .bold()
                 .padding(.leading)
                 .padding(.trailing)
             
-            Text("Rp. 2.000.000")
+            Text("Rp. \(self.data.hargaProduk)")
                 .font(.title)
                 .foregroundColor(Color.red)
                 .bold()
@@ -74,23 +116,18 @@ struct Product: View{
             
             HStack{
                 Image(systemName: "mappin.circle")
-                Text("Kab.Banyumas")
+                Text(self.data.lokasi)
             }
             .padding(.leading)
             .padding(.trailing)
             
             HStack{
                 HStack{
-                    Image(systemName: "star.fill")
-                        .foregroundColor(Color.yellow)
-                    Image(systemName: "star.fill")
-                        .foregroundColor(Color.yellow)
-                    Image(systemName: "star.fill")
-                        .foregroundColor(Color.yellow)
-                    Image(systemName: "star.fill")
-                        .foregroundColor(Color.yellow)
-                    Image(systemName: "star.fill")
-                        .foregroundColor(Color.yellow)
+                    ForEach(0..<self.data.ratingCount){
+                        items in
+                        Image(systemName: "star.fill")
+                            .foregroundColor(Color.yellow)
+                    }
                 }
             }
             .padding(.leading)
